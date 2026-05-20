@@ -10,7 +10,7 @@ class Controller:
         self._model = model
 
     def handleCreaGrafo(self, e):
-        self._model.creaGrafo()
+        self._model.creaGrafo(self._view.ddAnno.value)
         n,m= self._model.getGrafoDetails()
         self._view._txt_result.controls.clear()
         self._view._txt_result.controls.append(
@@ -19,7 +19,21 @@ class Controller:
         self._view.update_page()
 
     def handleDettagli(self, e):
-        pass
+        if self._choiceTeam is None:
+            self._view._txt_result.controls.clear()
+            self._view._txt_result.controls.append(
+                ft.Text(f"Non è stata effettuata una scelta del team. Selezionare un team dal menu.",color="red")
+            )
+            self._view.update_page()
+            return
+        viciniTuple = self._model.getVicini(self._choiceTeam)
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(ft.Text(f"Il nodo {self._choiceTeam} ha {len(viciniTuple)} vicini. In seguito una lista ordinata"), color="green")
+        for v in viciniTuple:
+            self._view._txt_result.controls.append(
+                ft.Text(f"{v[0]} - peso: {v[1]}", color="green")
+            )
+
 
     def handlePercorso(self, e):
         pass
